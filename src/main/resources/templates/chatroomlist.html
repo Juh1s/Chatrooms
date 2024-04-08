@@ -14,10 +14,11 @@
         </tr>
         <tr th:each="chatroom : ${chatrooms}">
             <td th:text="${chatroom.chatname}">chatname</td>
+            <td><a th:href="@{/deletechatroom/{id}(id=${chatroom.id})}" >Delete</a></td>
         </tr>
     </table>
 
     </p>
-	<p><a th:href="@{/addchatroom}" method="GET" >Add Chatroom</a></p>
+	<p><a th:href="@{/addchatroom}" method="GET" class="btn btn-primary" >Add Chatroom</a></p>
 </body>
 </html>

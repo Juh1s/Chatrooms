@@ -1,21 +1,17 @@
 package sof3.hh.chatroom.domain;
 
-/*
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-*/
 
-//@Entity
+@Entity
 public class Chatroom {
 
     // attribuutit
-    /*@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column (name = "chatid")
-    */
     private Long id;
     private String chatname;
 

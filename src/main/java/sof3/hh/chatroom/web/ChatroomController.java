@@ -1,20 +1,25 @@
 package sof3.hh.chatroom.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import sof3.hh.chatroom.domain.Chatroom;
+import sof3.hh.chatroom.domain.ChatroomRepository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ChatroomController {
     
-    List<Chatroom> chatrooms = new ArrayList<Chatroom>();
+    @Autowired
+    private ChatroomRepository chatroomRepository;
 
     // http://localhost:8080/index
 @RequestMapping(value="/index", method=RequestMethod.GET)
@@ -26,13 +31,11 @@ public class ChatroomController {
     // http://localhost:8080/chatroomlist
 @RequestMapping(value = "/chatroomlist", method=RequestMethod.GET)
     public String getChatroomlist(Model model){
-        chatrooms.add(new Chatroom("Politiikka"));
-        chatrooms.add(new Chatroom("Talous"));
+        List<Chatroom> chatrooms = (List<Chatroom>) chatroomRepository.findAll();
         model.addAttribute("chatrooms", chatrooms);
 
         return "chatroomlist"; // chatroomlist.html
     }
-
 
 @RequestMapping(value = "/addchatroom", method=RequestMethod.GET)
     public String getAddChatroom(Model model) {
@@ -42,8 +45,14 @@ public class ChatroomController {
 
 @RequestMapping(value = "/addchatroom", method=RequestMethod.POST)
     public String saveChatroom(@ModelAttribute Chatroom chatroom, Model model) {
-        chatrooms.add(chatroom);
+        chatroomRepository.save(chatroom);
         return "redirect:/chatroomlist"; // chatroomlist.html
     }
+
+@RequestMapping(value = "/deletechatroom/{id}", method=RequestMethod.GET)
+public String deleteChatroom(@PathVariable("id") Long chatroomId) {
+    chatroomRepository.deleteById(chatroomId);
+    return "redirect:/chatroomlist";
+}
 
 }
