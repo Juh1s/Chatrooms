@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroomlist</title>
+</head>
+<body>
+    <h1>Chatrooms</h1>
+    <p>
+    <table>
+        <tr>
+            <th>Chat Name</th>
+        </tr>
+        <tr th:each="chatroom : ${chatrooms}">
+            <td th:text="${chatroom.chatname}">chatname</td>
+        </tr>
+    </table>
+
+    </p>
+	<p><a th:href="@{/addchatroom}" method="GET" >Add Chatroom</a></p>
+</body>
+</html>

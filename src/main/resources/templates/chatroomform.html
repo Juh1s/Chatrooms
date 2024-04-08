@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Chatroom</title>
+</head>
+<body>
+    <h1>New Chatroom</h1>
+    <form action="#" th:action="@{/addchatroom}" th:object="${chatroom}" method="POST">
+        <p>Chatname: <input type="text" th:field="*{chatname}" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+    
+</body>
+</html>
