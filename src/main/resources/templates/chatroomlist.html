@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,11 @@
 </head>
 <body>
     <h1>Chatrooms</h1>
+    <p>Hello <span sec:authentication="name"></span>!</p>
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" value="Sign out" class="btn btn-danger" />
+    </form>
+	<p><a th:href="@{/login}" method="GET" class="btn btn-primary" >Login</a></p>
     <p>
     <table>
         <tr>
