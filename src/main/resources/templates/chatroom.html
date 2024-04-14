@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1 th:text="${chatroom.chatname}"></h1>
+    <p><a th:href="@{/editchatroom/{id}(id=${chatroom.id})}" method="GET" class="btn btn-primary">Rename Chat</a></p>
     <p>
     <table>
         <tr>
@@ -14,6 +15,7 @@
         </tr>
         <tr th:each="message : ${chatroom.messages}">
             <td th:text="${message.msg}">message</td>
+            <td><a th:href="@{/editmessage/{id}(id=${message.id})}" >Edit</a></td>
             <td><a th:href="@{/deletemessage/{id}(id=${message.id})}" >Delete</a></td>
         </tr>
     </table>

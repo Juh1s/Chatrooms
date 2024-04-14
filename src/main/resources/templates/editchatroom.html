@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Chatroom</title>
+    <title>Edit Chatroom</title>
 </head>
 <body>
-    <h1>New Chatroom</h1>
-    <form action="#" th:action="@{/savechatroom}" th:object="${chatroom}" method="POST">
+    <h1>Edit Chatroom</h1>
+    <form action="#" th:action="@{/editchatroom/{id}(id=${chatroom.id})}" th:object="${chatroom}" method="POST">
         <p>Chatname: <input type="text" th:field="*{chatname}" /></p>
         <p><input type="submit" value="Submit" /></p>
     </form>

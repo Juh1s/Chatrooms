@@ -20,10 +20,12 @@
     <table>
         <tr>
             <th>Message</th>
+            <th>Id</th>
             <th>Chatroom</th>
         </tr>
         <tr th:each="message : ${messages}">
             <td th:text="${message.msg}">message</td>
+            <td th:text="${message.id}">id</td>
             <td th:text="${message.chatroom}">chatroom</td>
         </tr>
     </table>

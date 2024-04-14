@@ -16,6 +16,8 @@ import sof3.hh.chatroom.domain.Message;
 import sof3.hh.chatroom.domain.MessageRepository;
 
 
+
+
 @Controller
 public class ChatroomController {
     
@@ -40,7 +42,6 @@ public class ChatroomController {
     public String getChatroomlist(Model model){
         List<Chatroom> chatrooms = (List<Chatroom>) chatroomRepository.findAll();
         model.addAttribute("chatrooms", chatrooms);
-
         return "chatroomlist"; // chatroomlist.html
 }
 
@@ -50,7 +51,22 @@ public class ChatroomController {
         return "chatroomform"; // chatroomform.html
 }
 
-@RequestMapping(value = "/addchatroom", method=RequestMethod.POST)
+@RequestMapping(value = "/editchatroom/{id}", method=RequestMethod.GET)
+    public String editChatroom(@PathVariable("id") Long chatroomId, Model model) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId).get();
+        model.addAttribute("chatroom", chatroom);
+        return "editchatroom"; // chatroomform.html
+}
+
+@RequestMapping(value = "/editchatroom/{id}", method=RequestMethod.POST)
+    public String editedChatroom(@ModelAttribute Chatroom chatroom, @PathVariable("id") Long chatroomId) {
+        Chatroom modifiedChatroom = chatroomRepository.findById(chatroomId).get();
+        modifiedChatroom.setChatname(chatroom.getChatname());
+        chatroomRepository.save(modifiedChatroom);
+        return "redirect:/chatroom/" + chatroomId; // chatroomform.html
+}
+
+@RequestMapping(value = "/savechatroom", method=RequestMethod.POST)
     public String saveChatroom(@ModelAttribute Chatroom chatroom) {
         chatroomRepository.save(chatroom);
         return "redirect:/chatroomlist"; // chatroomlist.html
@@ -70,19 +86,36 @@ public class ChatroomController {
 }
     
 @RequestMapping(value = "/addmessage/{id}", method=RequestMethod.GET)
-public String getAddMessate(@PathVariable("id") Long chatroomId, Model model) {
-    //Chatroom chatroom = chatroomRepository.findById(chatroomId);
-    model.addAttribute("chatrooms", chatroomRepository.findAll());
-    model.addAttribute("message", new Message(null, chatroomRepository.findById(chatroomId).get()));
-    return "messageform"; // messageform.html
-}
+    public String getAddMessate(@PathVariable("id") Long chatroomId, Model model) {
+        //Chatroom chatroom = chatroomRepository.findById(chatroomId);
+        model.addAttribute("chatrooms", chatroomRepository.findAll());
+        model.addAttribute("message", new Message(null, chatroomRepository.findById(chatroomId).get()));
+        return "messageform"; // messageform.html
+    }
 
-@RequestMapping(value = "/addmessage", method=RequestMethod.POST)
+@RequestMapping(value = "/savemessage", method=RequestMethod.POST)
     public String saveMessage(@ModelAttribute Message message) {
         String chatroomId = message.getChatroom().getId().toString();
         messageRepository.save(message);
         return "redirect:/chatroom/" + chatroomId; // chatroom.html
 }
+
+@RequestMapping(value = "/editmessage/{id}", method=RequestMethod.GET)
+    public String editMessage(@PathVariable("id") Long messageId, Model model) {
+        Message message = messageRepository.findById(messageId).get();
+        model.addAttribute("message", message);
+        model.addAttribute("chatrooms", chatroomRepository.findAll());
+        return "editmessage";
+    }
+
+@RequestMapping(value = "editmessage/{id}", method=RequestMethod.POST)
+    public String editedMessage(@ModelAttribute Message message, @PathVariable("id") Long messageId) {
+        String chatroomId = message.getChatroom().getId().toString();
+        Message modifiedMessage = messageRepository.findById(messageId).get();
+        modifiedMessage.setMsg(message.getMsg());
+        messageRepository.save(modifiedMessage);
+        return "redirect:/chatroom/" + chatroomId;
+    }
 
 @RequestMapping(value = "/deletemessage/{id}", method=RequestMethod.GET)
     public String deleteMessage(@PathVariable("id") Long messageId) {
