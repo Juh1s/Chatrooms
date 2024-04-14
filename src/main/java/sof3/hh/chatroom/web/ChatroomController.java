@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import sof3.hh.chatroom.domain.Chatroom;
 import sof3.hh.chatroom.domain.ChatroomRepository;
-import org.springframework.web.bind.annotation.RequestParam;
+//import sof3.hh.chatroom.domain.Message;
 
 
 @Controller
@@ -50,9 +50,17 @@ public class ChatroomController {
     }
 
 @RequestMapping(value = "/deletechatroom/{id}", method=RequestMethod.GET)
-public String deleteChatroom(@PathVariable("id") Long chatroomId) {
-    chatroomRepository.deleteById(chatroomId);
-    return "redirect:/chatroomlist";
-}
+    public String deleteChatroom(@PathVariable("id") Long chatroomId) {
+        chatroomRepository.deleteById(chatroomId);
+        return "redirect:/chatroomlist";
+    }
+
+@RequestMapping(value = "/chatroom/{id}", method=RequestMethod.GET)
+    public String getChatroom(@PathVariable("id") Long chatroomId, Model model) {
+        Chatroom chatroom = chatroomRepository.findById(chatroomId).get();
+        model.addAttribute("chatroom", chatroom);
+        return "chatroom";
+    }
+
 
 }

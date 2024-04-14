@@ -14,6 +14,7 @@
         </tr>
         <tr th:each="chatroom : ${chatrooms}">
             <td th:text="${chatroom.chatname}">chatname</td>
+            <td><a th:href="@{/chatroom/{id}(id=${chatroom.id})}" >Enter Chatroom</a></td>
             <td><a th:href="@{/deletechatroom/{id}(id=${chatroom.id})}" >Delete</a></td>
         </tr>
     </table>
