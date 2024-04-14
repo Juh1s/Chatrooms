@@ -46,6 +46,9 @@ public class ChatroomApplication {
 			for (Chatroom chatroom : chatroomRepository.findAll()) {
 				log.info(chatroom.toString());
 			}
+			for (Message message : messageRepository.findAll()) {
+				log.info(message.toString());
+			}
 
 		};
 	}

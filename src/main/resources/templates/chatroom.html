@@ -13,11 +13,13 @@
             <th>Messages</th>
         </tr>
         <tr th:each="message : ${chatroom.messages}">
-            <td th:text="${message.message}">message</td>
+            <td th:text="${message.msg}">message</td>
+            <td><a th:href="@{/deletemessage/{id}(id=${message.id})}" >Delete</a></td>
         </tr>
     </table>
 
     </p>
+	<p><a th:href="@{/addmessage/{id}(id=${chatroom.id})}" method="GET" class="btn btn-primary" >New Message</a></p>
 	<p><a th:href="@{/chatroomlist}" method="GET" class="btn btn-primary" >Chatroom list</a></p>
     
 </body>

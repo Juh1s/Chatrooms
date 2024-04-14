@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Message</title>
+</head>
+<body>
+    <h1>New Message</h1>
+    <p th:text="${message.chatroom}"></p>
+
+    <form action="#" th:action="@{/addmessage}" th:object="${message}" method="POST">
+        <p>Message: <input type="text" th:field="*{msg}" /></p>
+        <select hidden type="hidden" th:field="*{chatroom}" class="form-control">
+            <option type="hidden" th:each="chatroom: ${chatrooms}"
+                th:value="${chatroom.id}"
+                th:text="${chatroom.chatname}">
+            </option>
+        </select>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+    
+</body>
+</html>

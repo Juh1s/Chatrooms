@@ -16,7 +16,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="messageId")
     private Long id;
-    private String message;
+    private String msg;
 
     @ManyToOne
     @JoinColumn(name = "chatroomId")
@@ -24,12 +24,12 @@ public class Message {
     
     // konstruktorit
     public Message() {
-        this.message = null;
+        this.msg = null;
         this.chatroom = new Chatroom();
     }
 
-    public Message(String message, Chatroom chatroom) {
-        this.message = message;
+    public Message(String msg, Chatroom chatroom) {
+        this.msg = msg;
         this.chatroom = chatroom;
     }
 
@@ -42,12 +42,12 @@ public class Message {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public Chatroom getChatroom() {
@@ -60,7 +60,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message [id=" + id + ", message=" + message + ", chatroom=" + chatroom + "]";
+        return "Message [id=" + id + ", message=" + msg + ", chatroom=" + chatroom + "]";
     }
     
 }

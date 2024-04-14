@@ -1,5 +1,6 @@
 package sof3.hh.chatroom.domain;
 
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,10 +29,19 @@ public class Chatroom {
 
     // konstruktorit
     public Chatroom() {
+        super();
         this.chatname = null;
     }
     public Chatroom(String chatname) {
+        super();
         this.chatname = chatname;
+    }
+
+    // lisää viesti
+    public void addMessage(Message newMessage) {
+        List<Message> oldMessages = this.getMessages();
+        oldMessages.add(newMessage);
+        setMessages(oldMessages);
     }
 
     // setterit ja getterit
