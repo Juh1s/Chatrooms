@@ -30,11 +30,11 @@ public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
       .authorizeHttpRequests(authorize -> authorize
         .requestMatchers("/","/login").permitAll()
-        .requestMatchers(antMatcher("/login")).permitAll()
         .requestMatchers(antMatcher("/index")).permitAll()
         .requestMatchers(antMatcher("/chatroomlist")).permitAll()
         .requestMatchers(antMatcher("/chatroom/*")).permitAll()
         .requestMatchers(antMatcher("/singup")).permitAll()
+        .requestMatchers(antMatcher("/saveuser")).permitAll()
         .requestMatchers(antMatcher("/deletemessage/**")).hasAuthority("ADMIN")
         .requestMatchers(antMatcher("/editmessage/**")).hasAuthority("ADMIN")
         .requestMatchers(antMatcher("/deletechatroom/**")).hasAuthority("ADMIN")

@@ -3,17 +3,21 @@ package sof3.hh.chatroom.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.validation.Valid;
 import sof3.hh.chatroom.domain.Chatroom;
 import sof3.hh.chatroom.domain.ChatroomRepository;
 import sof3.hh.chatroom.domain.Message;
 import sof3.hh.chatroom.domain.MessageRepository;
+import sof3.hh.chatroom.domain.SignupForm;
 import sof3.hh.chatroom.domain.User;
 import sof3.hh.chatroom.domain.UserRepository;
 
@@ -43,7 +47,6 @@ public class ChatroomController {
 
         return "index"; // index.html
 }
-
     
     // http://localhost:8080/chatroomlist
 @RequestMapping(value = "/chatroomlist", method=RequestMethod.GET)
@@ -140,4 +143,43 @@ public class ChatroomController {
     public String login() {	
         return "login";
     }
+	
+    // sign-up
+@RequestMapping(value = "/signup")
+    public String addStudent(Model model){
+    	model.addAttribute("signupform", new SignupForm());
+        return "signupform";
+    }	
+    
+
+@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
+    public String saveUser(@Valid @ModelAttribute("signupform") SignupForm signupForm, BindingResult bindingResult) {
+    	if (!bindingResult.hasErrors()) { // validation errors
+    		if (signupForm.getPassword().equals(signupForm.getPasswordCheck())) { // check password match		
+	    		String password = signupForm.getPassword();
+		    	BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+		    	String hashPassword = bc.encode(password);
+	
+		    	User newUser = new User();
+		    	newUser.setPasswordHash(hashPassword);
+		    	newUser.setUsername(signupForm.getUsername());
+		    	newUser.setRole("USER");
+		    	if (userRepository.findByUsername(signupForm.getUsername()) == null) { // Check if user exists
+		    		userRepository.save(newUser);
+		    	}
+		    	else {
+	    			bindingResult.rejectValue("username", "err.username", "Username already exists");    	
+	    			return "signupform";		    		
+		    	}
+    		}
+    		else {
+    			bindingResult.rejectValue("passwordCheck", "err.passCheck", "Passwords does not match");    	
+    			return "signupform";
+    		}
+    	}
+    	else {
+    		return "signupform";
+    	}
+    	return "redirect:/login";    	
+    }    
 }
