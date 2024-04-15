@@ -22,6 +22,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
             <td><a th:href="@{/deletemessage/{id}(id=${message.id})}" >Delete</a></td>
         </tr>
     </table>
+    
+    <table>
+        <tr>
+            <th>User Name</th>
+        </tr>
+        <tr th:each="user : ${chatroom.users}">
+            <td th:text="${user.username}">chatname</td>
+        </tr>
+    </table>
 
     </p>
 	<p><a th:href="@{/addmessage/{id}(id=${chatroom.id})}" method="GET" class="btn btn-primary" >New Message</a></p>

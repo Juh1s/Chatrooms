@@ -1,6 +1,7 @@
 package sof3.hh.chatroom.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,8 +21,6 @@ import sof3.hh.chatroom.domain.MessageRepository;
 import sof3.hh.chatroom.domain.SignupForm;
 import sof3.hh.chatroom.domain.User;
 import sof3.hh.chatroom.domain.UserRepository;
-
-
 
 
 
@@ -95,7 +94,22 @@ public class ChatroomController {
         model.addAttribute("chatroom", chatroom);
         return "chatroom";
 }
-    
+
+@RequestMapping(value = "/userchoice", method = RequestMethod.GET)
+    public String getUserChoice(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("user", new User());
+        return "userchoice";
+    }
+
+@RequestMapping(value = "/useractivities/{id}", method=RequestMethod.GET)
+    public String getUserActivities(@PathVariable("id") Long userId, Model model) {
+        Optional<User> user = userRepository.findById(userId);
+        model.addAttribute("user", user.get());
+        model.addAttribute("chatrooms", user.get().getChatrooms());
+        return "useractivities";
+    }
+
 @RequestMapping(value = "/addmessage/{id}", method=RequestMethod.GET)
     public String getAddMessage(@PathVariable("id") Long chatroomId, Model model) {
         model.addAttribute("chatrooms", chatroomRepository.findAll());
@@ -106,9 +120,30 @@ public class ChatroomController {
 
 @RequestMapping(value = "/savemessage", method=RequestMethod.POST)
     public String saveMessage(@ModelAttribute Message message) {
-        String chatroomId = message.getChatroom().getId().toString();
+        Long chatId = message.getChatroom().getId();
+        Long userId = message.getUser().getId();
+        Chatroom chatroom = chatroomRepository.findById(chatId).get();
+        User user = userRepository.findById(userId).get();
+        List<User> users = chatroom.getUsers();         //adds user to chatroom.users
+        if(!users.contains(user)) {
+            users.add(user);
+            chatroom.setUsers(users);
+        }
+        List<Message> chatMessages = chatroom.getMessages();    //adds message to chatroom.messages
+        chatMessages.add(message);
+        chatroom.setMessages(chatMessages);
+        List<Chatroom> chatrooms = user.getChatrooms(); //adds chatroom to user.chatrooms
+        if(!chatrooms.contains(chatroom)) {
+            chatrooms.add(chatroom);
+            user.setChatrooms(chatrooms);
+        }
+        List<Message> userMessages = user.getMessages();        //adds message to user.messages
+        userMessages.add(message);
+        user.setMessages(userMessages);
+        //chatroomRepository.save(chatroom);
+        //userRepository.save(user);
         messageRepository.save(message);
-        return "redirect:/chatroom/" + chatroomId; // chatroom.html
+        return "redirect:/chatroom/" + chatId.toString(); // chatroom.html
 }
 
 @RequestMapping(value = "/editmessage/{id}", method=RequestMethod.GET)
@@ -146,7 +181,7 @@ public class ChatroomController {
 	
     // sign-up
 @RequestMapping(value = "/signup")
-    public String addStudent(Model model){
+    public String userSignup(Model model){
     	model.addAttribute("signupform", new SignupForm());
         return "signupform";
     }	

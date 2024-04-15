@@ -9,10 +9,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <body>
     <h1>Index repositories</h1>
 
+    <h2>Chatrooms</h2>
+    <p><a th:text="${chatrooms}" ></a></p>
     <table>
         <tr>
-            <th>Chatroom</th>
+            <th>Chatname</th>
             <th>Users</th>
+            <th></th>
+            <th>Chatinfo</th>
         </tr>
         <tr th:each="chatroom : ${chatrooms}">
             <td th:text="${chatroom.chatname}">chatname</td>
@@ -21,6 +25,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
             <td th:text="${chatroom}">chatname</td>
         </tr>
     </table>
+    <p></p>
+    <h2>Users</h2>
+    <p><a th:text="${users}" ></a></p>
     <table>
         <tr>
             <th>User</th>
@@ -33,6 +40,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
             <td th:text="${user.messages}">user</td>
         </tr>
     </table>
+    <p></p>
+    <h2>Messages</h2>
+    <p><a th:text="${messages}" ></a></p>
     <table>
         <tr>
             <th>Message</th>

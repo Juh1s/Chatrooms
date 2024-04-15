@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User choice</title>
+</head>
+<body>
+    <h1>User choice</h1>
+
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Messages</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}">user</td>
+            <td><a th:href="@{/useractivities/{id}(id=${user.id})}" >Activities</a></td>
+        </tr>
+    </table>
+
+    <form action="#" th:action="@{/useractivities}">
+        <p>User:
+        <select  type="text" th:field="${user}" class="form-control">
+            <option type="text" th:each="user: ${users}"
+                th:value="${user.id}"
+                th:text="${user.username}">
+            </option>
+        </select>
+        </p>
+        <p><input type="submit" value="Choose" /></p>
+    </form>
+    
+</body>
+</html>

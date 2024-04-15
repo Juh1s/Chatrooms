@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+    <h1>User</h1>
+    
+    <h2>All User Chatrooms</h2>
+    <table>
+        <tr>
+            <th>Chat Name</th>
+        </tr>
+        <tr th:each="chatroom : ${chatrooms}">
+            <td th:text="${chatroom.chatname}">chatname</td>
+        </tr>
+    </table>
+
+    
+    <h2>All User Messages</h2>
+    <table>
+        <tr>
+            <th>Chatroom</th>
+            <th>Message</th>
+        </tr>
+        <tr th:each="message : ${user.messages}">
+            <td th:text="${message.chatroom.chatname}">chatname</td>
+            <td th:text="${message.msg}">message</td>
+        </tr>
+    </table>
+    
+</body>
+</html>
