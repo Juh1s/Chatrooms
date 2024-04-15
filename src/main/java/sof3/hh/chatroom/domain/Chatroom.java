@@ -4,6 +4,7 @@ package sof3.hh.chatroom.domain;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -26,6 +28,9 @@ public class Chatroom {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "chatroom")
     private List<Message> messages;
+
+    @ManyToMany(mappedBy = "chatrooms")
+    private List<User> users;
 
     // konstruktorit
     public Chatroom() {
@@ -63,6 +68,13 @@ public class Chatroom {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
+    public List<User> getUsers() {
+        return users;
+    }
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+    
 
     // Chatroomin tiedot tekstinä
     @Override

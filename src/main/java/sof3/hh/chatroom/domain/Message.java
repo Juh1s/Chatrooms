@@ -21,16 +21,22 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "chatroomId")
     private Chatroom chatroom;      // FK
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;              // FK
     
     // konstruktorit
     public Message() {
         this.msg = null;
         this.chatroom = new Chatroom();
+        this.user = new User();
     }
 
-    public Message(String msg, Chatroom chatroom) {
+    public Message(String msg, Chatroom chatroom, User user) {
         this.msg = msg;
         this.chatroom = chatroom;
+        this.user = user;
     }
 
     // getterit ja setterit
@@ -58,9 +64,18 @@ public class Message {
         this.chatroom = chatroom;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Message [id=" + id + ", message=" + msg + ", chatroom=" + chatroom + "]";
     }
+
     
 }

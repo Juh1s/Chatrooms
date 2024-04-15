@@ -5,11 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-/*import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-*/import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 
 import sof3.hh.chatroom.web.UserDetailServiceImpl;
 
@@ -20,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import java.util.ArrayList;
 
 @Configuration
+@EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
@@ -31,11 +30,16 @@ public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
       .authorizeHttpRequests(authorize -> authorize
         .requestMatchers("/","/login").permitAll()
+        .requestMatchers(antMatcher("/login")).permitAll()
         .requestMatchers(antMatcher("/index")).permitAll()
         .requestMatchers(antMatcher("/chatroomlist")).permitAll()
         .requestMatchers(antMatcher("/chatroom/*")).permitAll()
         .requestMatchers(antMatcher("/singup")).permitAll()
-        .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+        .requestMatchers(antMatcher("/deletemessage/**")).hasAuthority("ADMIN")
+        .requestMatchers(antMatcher("/editmessage/**")).hasAuthority("ADMIN")
+        .requestMatchers(antMatcher("/deletechatroom/**")).hasAuthority("ADMIN")
+        .requestMatchers(antMatcher("/editchatroom/**")).hasAuthority("ADMIN")
+        .requestMatchers(antMatcher("/admin/**")).hasAuthority("ADMIN")
         .anyRequest().authenticated()        
       )
       .formLogin(formlogin -> formlogin

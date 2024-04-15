@@ -3,7 +3,6 @@ package sof3.hh.chatroom.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +14,9 @@ import sof3.hh.chatroom.domain.Chatroom;
 import sof3.hh.chatroom.domain.ChatroomRepository;
 import sof3.hh.chatroom.domain.Message;
 import sof3.hh.chatroom.domain.MessageRepository;
+import sof3.hh.chatroom.domain.User;
+import sof3.hh.chatroom.domain.UserRepository;
+
 
 
 
@@ -26,17 +28,22 @@ public class ChatroomController {
     private ChatroomRepository chatroomRepository;
     @Autowired
     private MessageRepository messageRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // http://localhost:8080/index
 @RequestMapping(value="/index", method=RequestMethod.GET)
     public String getIndex(Model model){
         List<Chatroom> chatrooms = (List<Chatroom>) chatroomRepository.findAll();
         model.addAttribute("chatrooms", chatrooms);
+        List<User> users = (List<User>) userRepository.findAll();
+        model.addAttribute("users", users);
         List<Message> messages = (List<Message>) messageRepository.findAll();
         model.addAttribute("messages", messages);
 
         return "index"; // index.html
 }
+
     
     // http://localhost:8080/chatroomlist
 @RequestMapping(value = "/chatroomlist", method=RequestMethod.GET)
@@ -74,7 +81,6 @@ public class ChatroomController {
 }
 
 @RequestMapping(value = "/deletechatroom/{id}", method=RequestMethod.GET)
-@PreAuthorize("hasRole('ADMIN')")
     public String deleteChatroom(@PathVariable("id") Long chatroomId) {
         chatroomRepository.deleteById(chatroomId);
         return "redirect:/chatroomlist";
@@ -88,10 +94,10 @@ public class ChatroomController {
 }
     
 @RequestMapping(value = "/addmessage/{id}", method=RequestMethod.GET)
-    public String getAddMessate(@PathVariable("id") Long chatroomId, Model model) {
-        //Chatroom chatroom = chatroomRepository.findById(chatroomId);
+    public String getAddMessage(@PathVariable("id") Long chatroomId, Model model) {
         model.addAttribute("chatrooms", chatroomRepository.findAll());
-        model.addAttribute("message", new Message(null, chatroomRepository.findById(chatroomId).get()));
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("message", new Message(null, chatroomRepository.findById(chatroomId).get(), new User()));
         return "messageform"; // messageform.html
     }
 
@@ -123,7 +129,9 @@ public class ChatroomController {
     public String deleteMessage(@PathVariable("id") Long messageId) {
         Message message = messageRepository.findById(messageId).get();
         String chatroomId = message.getChatroom().getId().toString();
-        messageRepository.deleteById(messageId);
+        //if(message.getUser().getUsername() == UserController.getCurrentUserContext() ){
+            messageRepository.deleteById(messageId);
+        //}
         return "redirect:/chatroom/" + chatroomId;
     }
     

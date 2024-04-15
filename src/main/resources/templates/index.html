@@ -7,26 +7,39 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <title>Index</title>
 </head>
 <body>
-    <h1>Placeholder index</h1>
+    <h1>Index repositories</h1>
 
     <table>
         <tr>
             <th>Chatroom</th>
+            <th>Users</th>
         </tr>
         <tr th:each="chatroom : ${chatrooms}">
             <td th:text="${chatroom.chatname}">chatname</td>
+            <td th:text="${chatroom.users}">users</td>
             <td><a th:href="@{/chatroom/{id}(id=${chatroom.id})}" >Enter Chatroom</a></td>
+            <td th:text="${chatroom}">chatname</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Chatrooms</th>
+            <th>Messages</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}">username</td>
+            <td th:text="${user.chatrooms}">chatrooms</td>
+            <td th:text="${user.messages}">user</td>
         </tr>
     </table>
     <table>
         <tr>
             <th>Message</th>
-            <th>Id</th>
             <th>Chatroom</th>
         </tr>
         <tr th:each="message : ${messages}">
             <td th:text="${message.msg}">message</td>
-            <td th:text="${message.id}">id</td>
             <td th:text="${message.chatroom}">chatroom</td>
         </tr>
     </table>

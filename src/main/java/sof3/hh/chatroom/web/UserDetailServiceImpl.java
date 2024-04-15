@@ -12,12 +12,9 @@ import sof3.hh.chatroom.domain.User;
 
 @Service
  public class UserDetailServiceImpl implements UserDetailsService {
-    private final UserRepository repository;
-    
     @Autowired
-    public UserDetailServiceImpl(UserRepository userRepository) {
-        this.repository = userRepository;
-    }
+    private  UserRepository repository;
+    
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 

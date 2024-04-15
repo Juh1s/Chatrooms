@@ -17,6 +17,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
                 th:text="${chatroom.chatname}">
             </option>
         </select>
+        <select  type="hidden" th:field="*{user}" class="form-control">
+            <option type="hidden" th:each="user: ${users}"
+                th:value="${user.id}"
+                th:text="${user.username}">
+            </option>
+        </select>
         <p><input type="submit" value="Submit" /></p>
     </form>
     

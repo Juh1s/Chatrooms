@@ -39,10 +39,10 @@ public class ChatroomApplication {
 			userRepository.save(user1);
 			userRepository.save(user2);
 
-			Message message1 = new Message("Vasen, vasen, vasen.", chatroom1);
-			Message message2 = new Message("Eikun oikee!", chatroom1);
-			Message message3 = new Message("Riittääkö verot?", chatroom2);
-			Message message4 = new Message("Parempia palkkoja varten veroja pitäisi vähentaa.", chatroom2);
+			Message message1 = new Message("Vasen, vasen, vasen.", chatroom1, user1);
+			Message message2 = new Message("Eikun oikee!", chatroom1, user2);
+			Message message3 = new Message("Riittääkö verot?", chatroom2, user2);
+			Message message4 = new Message("Parempia palkkoja varten veroja pitäisi vähentaa.", chatroom2, user1);
 
 			messageRepository.save(message1);
 			messageRepository.save(message2);

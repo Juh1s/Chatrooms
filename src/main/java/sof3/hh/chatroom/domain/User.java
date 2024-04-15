@@ -1,10 +1,20 @@
 package sof3.hh.chatroom.domain;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity(name= "users")
  public class User {
@@ -20,6 +30,19 @@ import jakarta.persistence.Id;
     private String passwordHash;
     @Column(name = "role", nullable = false)
     private String role;
+    
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Message> messages;
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(
+        name = "UserChatroom",
+        joinColumns = { @JoinColumn(name = "userId")},
+        inverseJoinColumns = { @JoinColumn(name = "chatroomId")}
+    )
+    @JsonIgnoreProperties("users")
+    private List<Chatroom> chatrooms;
 
     public User(
         String username,
@@ -59,6 +82,22 @@ import jakarta.persistence.Id;
     }
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public List<Chatroom> getChatrooms() {
+        return chatrooms;
+    }
+
+    public void setChatrooms(List<Chatroom> chatrooms) {
+        this.chatrooms = chatrooms;
     }
 
 }
